@@ -24,6 +24,10 @@ Attention à bien ajouter les connecteurs USB (zigbee, RFlink) <https://www.home
 
 Première configuration : <https://www.home-assistant.io/getting-started/onboarding>
 
+### Connection à Google Home
+
+Suivre le tuto : https://www.home-assistant.io/integrations/google_assistant/#manual-setup
+
 ## Zigbee to Mqtt
 
 ### Installation via docker
