@@ -36,6 +36,10 @@ Ajout de zigbeeToMQtt : <https://github.com/zigbee2mqtt/hassio-zigbee2mqtt#insta
 
 ## RFlink
 
+### Contruire le connecteur
+
+tuto pas à pas : <https://opendomotech.com/fabriquer-rflink-alternative-diy-du-rfxcom>
+
 ### Ajout à Home assistant
 
 Ajout de RFlink : <https://www.home-assistant.io/integrations/rflink/>
