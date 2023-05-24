@@ -69,3 +69,19 @@ Installer via docker-composer : <https://hub.docker.com/r/linuxserver/transmissi
 ### Connnection au SMB
 
 ### Configuration du routeur
+
+## Accéder au système depuis internet
+
+Afin d'accéder à vos différents outils depuis interne, vous aller devoir configurer votre BOX. 
+
+### DyDNS
+Tous d'abord il vous faut soit un IP fix, soit un nom de domaine dynamique lié à l'IP de votre Box. 
+Vous pouvez utiliser le service https://www.noip.com/ par exemple qui est gratuit moyenne une validation tous les mois. 
+Une fois votre Dynamic DNS créé vous pouvez renseigner les informations dans votre Box, section DynDNS.
+Par exemple : 
+![Screenshot 2023-05-24 11 13 27](https://github.com/qledelas/home-jarvis/assets/48330020/fae33371-d954-4c05-93fd-605b4d9e1412)
+
+### règle NAT
+Il faut ensuite indiqué à votre box vers quelle IP elle doit rediriger le traffic utilisant tel ou tel port.
+Rendez vous dans la section NAT :
+![Screenshot 2023-05-24 11 22 00](https://github.com/qledelas/home-jarvis/assets/48330020/641b6409-7651-4e0e-a037-5c016acd1d4a)
