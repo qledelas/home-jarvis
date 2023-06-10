@@ -2,7 +2,7 @@ version: '3.8'
 services:
   homeassistant:
     container_name: homeassistant
-    image: "ghcr.io/home-assistant/home-assistant:stable"
+    image: homeassistant/raspberrypi3-homeassistant:latest
     volumes:
       - ./homeassistant:/config
       - /etc/localtime:/etc/localtime:ro
