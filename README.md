@@ -26,6 +26,7 @@ ssh mon_user@mon_ip
 Tous les outils serons installer via docker compose. La première étape est donc d'installer docker. 
 Suivre les étapes suivante => <https://docs.docker.com/engine/install/debian/#install-using-the-repository>
 
+Puis suivre les étapes suivante pour lancer docker en non root => <https://docs.docker.com/engine/install/linux-postinstall/>
 ## Home assistant
 
 ### Installation via docker
