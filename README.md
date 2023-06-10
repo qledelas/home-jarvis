@@ -27,6 +27,9 @@ Tous les outils serons installer via docker compose. La première étape est don
 Suivre les étapes suivante => <https://docs.docker.com/engine/install/debian/#install-using-the-repository>
 
 Puis suivre les étapes suivante pour lancer docker en non root => <https://docs.docker.com/engine/install/linux-postinstall/>
+
+Et enfin suivre ces étapes pour que docker démarre automatiquement => <sudo systemctl enable docker.service
+sudo systemctl enable containerd.service>
 ## Home assistant
 
 ### Installation via docker
