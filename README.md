@@ -10,7 +10,21 @@ Installation domotique sur Raspberry PI
 
 Suivre la documentation pour installer l'OS raspberry pi light <https://www.raspberrypi.com/documentation/computers/getting-started.html#installing-the-operating-system>
 
-Lien vers les images : <https://www.raspberrypi.com/software/operating-systems/#raspberry-pi-os-32-bit>
+Installer Raspberry PI Imager, selectionner une image sans Desktop, puis dans les options avancé activé la connection ssh et votre connection Wifi. 
+Enfin lancé l'ecriture sur votre carte SD.
+
+Une fois l'écriture terminé, inséret la carte SD dans votre RasPI puis branché le au secteur. 
+Patiente quelque seconde, vous devrier voir votre RasPI se connecter a votre Wifi, vous aller alors pouvoir récuper son adresse IP.
+Ensuite connecté vous à votre RasPI par ssh. 
+
+```bash
+ssh mon_user@mon_ip
+```
+
+## Docker
+
+Tous les outils serons installer via docker compose. La première étape est donc d'installer docker. 
+Suivre les étapes suivante => <https://docs.docker.com/engine/install/debian/#install-using-the-repository>
 
 ## Home assistant
 
