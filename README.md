@@ -28,8 +28,7 @@ Suivre les étapes suivante => <https://docs.docker.com/engine/install/debian/#i
 
 Puis suivre les étapes suivante pour lancer docker en non root => <https://docs.docker.com/engine/install/linux-postinstall/>
 
-Et enfin suivre ces étapes pour que docker démarre automatiquement => <sudo systemctl enable docker.service
-sudo systemctl enable containerd.service>
+Et enfin suivre ces étapes pour que docker démarre automatiquement => <https://docs.docker.com/engine/install/linux-postinstall/#configure-docker-to-start-on-boot-with-systemd>
 ## Home assistant
 
 ### Installation via docker
