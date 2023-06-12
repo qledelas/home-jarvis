@@ -53,3 +53,20 @@ services:
       - 51413:51413
       - 51413:51413/udp
     restart: unless-stopped
+    
+  rpi-monitor:
+    image: michaelmiklis/rpi-monitor:latest
+    container_name: rpi-monitor
+    volumes:
+      - /opt/vc:/opt/vc
+      - /boot:/boot
+      - /sys:/dockerhost/sys:ro
+      - /etc:/dockerhost/etc:ro
+      - /proc:/dockerhost/proc:ro
+      - /usr/lib:/dockerhost/usr/lib:ro
+    devices:
+      - "/dev/vchiq:/dev/vchiq" 
+      - "/dev/vcsm:/dev/vcsm"  
+    restart: unless-stopped
+    ports:
+      - 8888:8888
