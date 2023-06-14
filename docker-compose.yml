@@ -6,37 +6,56 @@ services:
     volumes:
       - ./homeassistant:/config
       - /etc/localtime:/etc/localtime:ro
+      - /dev/serial/by-id/usb-1a86_USB2.0-Serial-if00-port0:/dev/serial/by-id/usb-1a86_USB2.0-Serial-if00-port0:ro
     restart: unless-stopped
     privileged: true
     network_mode: host
+    devices:
+      - /dev/ttyUSB0:/dev/ttyUSB0
+      - /dev/ttyACM0:/dev/ttyACM0
 
   mqtt:
     image: eclipse-mosquitto:2.0
     container_name: mosquitto
     restart: unless-stopped
     volumes:
-      - "./zigbee2mqtt/mosquitto-data:/mosquitto"
+      - ./zigbee2mqtt/mosquitto-data:/mosquitto
     ports:
-      - "1883:1883"
-      - "9001:9001"
-    command: "mosquitto -c /mosquitto-no-auth.conf"
-  
+      - 1883:1883
+      - 9001:9001
+    command: mosquitto -c /mosquitto-no-auth.conf
+
   zigbee2mqtt:
     container_name: zigbee2mqtt
-    image: koenkk/zigbee2mqtt
     restart: unless-stopped
+    image: koenkk/zigbee2mqtt
     volumes:
       - ./zigbee2mqtt/zigbee2mqtt-data:/app/data
       - /run/udev:/run/udev:ro
     ports:
-      # Frontend port
       - 8080:8080
     environment:
       - TZ=Europe/Berlin
     devices:
-      # Make sure this matched your adapter location
       - /dev/ttyUSB0:/dev/ttyUSB0
+      - /dev/ttyACM0:/dev/ttyACM0
 
+  rpi-monitor:
+    image: michaelmiklis/rpi-monitor:latest
+    container_name: rpi-monitor
+    volumes:
+      - /opt/vc:/opt/vc
+      - /boot:/boot
+      - /sys:/dockerhost/sys:ro
+      - /etc:/dockerhost/etc:ro
+      - /proc:/dockerhost/proc:ro
+      - /usr/lib:/dockerhost/usr/lib:ro
+    devices:
+      - "/dev/vchiq:/dev/vchiq"
+    restart: unless-stopped
+    ports:
+      - 8888:8888
+      
   transmission:
     image: lscr.io/linuxserver/transmission:latest
     container_name: transmission
@@ -53,20 +72,3 @@ services:
       - 51413:51413
       - 51413:51413/udp
     restart: unless-stopped
-    
-  rpi-monitor:
-    image: michaelmiklis/rpi-monitor:latest
-    container_name: rpi-monitor
-    volumes:
-      - /opt/vc:/opt/vc
-      - /boot:/boot
-      - /sys:/dockerhost/sys:ro
-      - /etc:/dockerhost/etc:ro
-      - /proc:/dockerhost/proc:ro
-      - /usr/lib:/dockerhost/usr/lib:ro
-    devices:
-      - "/dev/vchiq:/dev/vchiq" 
-      - "/dev/vcsm:/dev/vcsm"  
-    restart: unless-stopped
-    ports:
-      - 8888:8888
