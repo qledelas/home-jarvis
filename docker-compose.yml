@@ -1,5 +1,23 @@
 version: '3.8'
 services:
+  swag:
+    image: linuxserver/swag:arm32v7-2.6.0
+    container_name: swag
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - URL=MON-NOM-DE-DOMAINE
+      - VALIDATION=http
+    volumes:
+      - ${PWD}/swag/homeassistant.subdomain.conf:/config/nginx/proxy-confs/homeassistant.subdomain.conf
+    ports:
+      - 443:443
+      - 80:80
+    restart: unless-stopped
+  
   homeassistant:
     container_name: homeassistant
     image: homeassistant/raspberrypi3-homeassistant:latest
@@ -24,7 +42,7 @@ services:
       - 1883:1883
       - 9001:9001
     command: mosquitto -c /mosquitto-no-auth.conf
-
+  
   zigbee2mqtt:
     container_name: zigbee2mqtt
     restart: unless-stopped
@@ -55,20 +73,3 @@ services:
     restart: unless-stopped
     ports:
       - 8888:8888
-      
-  transmission:
-    image: lscr.io/linuxserver/transmission:latest
-    container_name: transmission
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Etc/UTC
-    volumes:
-      - ./transmission:/config
-      - ./transmission:/downloads
-      - ./transmission:/watch
-    ports:
-      - 9091:9091
-      - 51413:51413
-      - 51413:51413/udp
-    restart: unless-stopped

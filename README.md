@@ -29,20 +29,65 @@ Suivre les étapes suivante => <https://docs.docker.com/engine/install/debian/#i
 Puis suivre les étapes suivante pour lancer docker en non root => <https://docs.docker.com/engine/install/linux-postinstall/>
 
 Et enfin suivre ces étapes pour que docker démarre automatiquement => <https://docs.docker.com/engine/install/linux-postinstall/#configure-docker-to-start-on-boot-with-systemd>
+
 ## Home assistant
 
 ### Installation via docker
 
-Mettre en place un docker compose en suivant la documentation <https://www.home-assistant.io/installation/raspberrypi#install-home-assistant-container>
+Dans le fichier docker-compose.yml de se projet vous trouverez qui permet de démarrer homeassisant core.
+Attention à bien ajouter les vos connecteurs USB si vous en avez (zigbee, RFlink). 
+Pour avoir la liste des périphérique usb connecté utilisé la commande : 
 
-Attention à bien ajouter les connecteurs USB (zigbee, RFlink) <https://www.home-assistant.io/installation/raspberrypi#exposing-devices>
+```bash
+sudo blkid
+```
+
+Documentation Officiel 
+- <https://www.home-assistant.io/installation/raspberrypi#install-home-assistant-container>
+- <https://www.home-assistant.io/installation/raspberrypi#exposing-devices>
 
 ### Configuration
 
-Première configuration : <https://www.home-assistant.io/getting-started/onboarding>
+Pour le premier démarrage de homeassistant vous pouvez suivrer les étapes du tuto : <https://www.home-assistant.io/getting-started/onboarding>
+Accéder au site via l'IP de votre raspberry pi <http://192.168.0.x:8123>
+
+### Ajout du https
+
+Par default homeassistant est accessible en http avec le port 8123. Pour certain cas ( comme la connection à google home ),
+il doit être exposé sur internet en https.
+Tous d'abord rediriger via votre box le port 80 et 443 vers l'ip de votre raspberry pi. cf
+[Accéder au système depuis interne](#accéder-au-système-depuis-internet)
+
+Ensuite suivre les étapes suivantes :
+
+1. Ajouté à votre docker-compose le service swag ( cf docker-compose.yml du projet).
+2. Modifier le fichier swag/homeassistant.subdomain.conf pour mettre votre nom de domaine et l'ip local de votre raspberry.
+3. Ajouter ces paramêtres à votre fichier de homeassisant/configuration.yml
+
+```yaml
+homeassistant:
+  external_url: https://MON-NOM-DE-DOMAINE
+#  internal_url: "http://MON-NOM-DE-DOMAINE:8123"
+
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 192.168.0.0/24
+    - 172.18.0.0/24
+```
+
+4. redémarré homeassistant puis démarrer le conteneur swag. 
+
+```bash
+docker compose restart homeassistant
+docker compose start swag
+
+<https://community.home-assistant.io/t/remote-access-with-docker/314345>
+```
 
 ### Connection à Google Home
 
+Prérequis : homeassistant doit être accessible en https depuis internet. 
 Suivre le tuto : https://www.home-assistant.io/integrations/google_assistant/#manual-setup
 
 ## Zigbee to Mqtt
@@ -92,8 +137,8 @@ Installer via docker-composer : <https://hub.docker.com/r/linuxserver/transmissi
 Afin d'accéder à vos différents outils depuis interne, vous aller devoir configurer votre BOX. 
 
 ### DyDNS
-Tous d'abord il vous faut soit un IP fix, soit un nom de domaine dynamique lié à l'IP de votre Box. 
-Vous pouvez utiliser le service https://www.noip.com/ par exemple qui est gratuit moyenne une validation tous les mois. 
+Tous d'abord il vous faut soit une IP fix, soit un nom de domaine dynamique lié à l'IP de votre Box. 
+Vous pouvez utiliser le service https://www.noip.com/ par exemple qui est gratuit moyennenent une validation tous les mois. 
 Une fois votre Dynamic DNS créé vous pouvez renseigner les informations dans votre Box, section DynDNS.
 Par exemple : 
 ![Screenshot 2023-05-24 11 13 27](https://github.com/qledelas/home-jarvis/assets/48330020/fae33371-d954-4c05-93fd-605b4d9e1412)
