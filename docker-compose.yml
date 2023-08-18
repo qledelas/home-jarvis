@@ -73,3 +73,16 @@ services:
     restart: unless-stopped
     ports:
       - 8888:8888
+
+  motioneye:
+    image: daku/motioneye:latest
+    ports:
+      - "8081:8081"
+      - "8765:8765"
+    volumes:
+      - etc_motioneye:/etc/motioneye
+      - var_lib_motioneye:/var/lib/motioneye
+
+volumes:
+  etc_motioneye:
+  var_lib_motioneye:

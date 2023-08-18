@@ -132,6 +132,26 @@ Installer via docker-composer : <https://hub.docker.com/r/linuxserver/transmissi
 
 ### Configuration du routeur
 
+## Video surveillance
+
+Afin de mettre en place un système de vidéo surveillance nous allons utiliser motioneye. 
+
+Il va permettre de se connecter à plusieur caméra et de gérer la détection de mouvement. 
+
+### Installation via Docker
+
+Installer via docker-compose (cf fichier docker-compose.yml).
+
+Puis accéder à http://192.168.0.x:8765/
+
+### Ajout à Home assistant
+
+Voici les étapes à suivre pour ajouter vos caméras dans Home assistant :
+
+1. Dans les integrations ajouter motioneye avec admin et user comme utilisateur (laisser mdp à vide).
+2. Dans les automations y créer une nouvelle qui se base sur un webhook. Il faut alors configurer ce webhook dans motioneye (onglet motion detection notification)
+L'action pourra être par exemple d'envoyer une notification.
+
 ## Accéder au système depuis internet
 
 Afin d'accéder à vos différents outils depuis interne, vous aller devoir configurer votre BOX. 
