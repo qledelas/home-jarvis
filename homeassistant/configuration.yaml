@@ -6,40 +6,24 @@ default_config:
 frontend:
   themes: !include_dir_merge_named themes
 
-# Text to speech
-tts:
-  - platform: google_translate
-
 automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 
-rflink:
-  port: /dev/serial/by-id/usb-1a86_USB2.0-Serial-if00-port0
-  tcp_keepalive_idle_timer: 600
+# homeassistant:
+#   external_url: https://MON-NOM-DE-DOMAINE
+# #  internal_url: "http://MON-NOM-DE-DOMAINE:8123"
 
-light:
-  - platform: rflink
-    automatic_add: true
-sensor:
-  - platform: rflink
-    automatic_add: true
+# http:
+#   use_x_forwarded_for: true
+#   trusted_proxies:
+#     - 192.168.0.0/24
+#     - 172.18.0.0/24
 
-homeassistant:
-  external_url: https://MON-NOM-DE-DOMAINE
-#  internal_url: "http://MON-NOM-DE-DOMAINE:8123"
-
-http:
-  use_x_forwarded_for: true
-  trusted_proxies:
-    - 192.168.0.0/24
-    - 172.18.0.0/24
-
-# Example configuration.yaml entry
-google_assistant:
-  project_id: maison-10611
-  service_account: !include service_account.json
-  report_state: true
-  exposed_domains:
-    - light
-    - script
+# google_assistant:
+#   project_id: maison-10611
+#   service_account: !include service_account.json
+#   report_state: true
+#   exposed_domains:
+#     - light
+#     - script

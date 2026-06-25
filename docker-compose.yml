@@ -1,88 +1,55 @@
-version: '3.8'
 services:
-  swag:
-    image: linuxserver/swag:arm32v7-2.6.0
-    container_name: swag
-    cap_add:
-      - NET_ADMIN
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Etc/UTC
-      - URL=MON-NOM-DE-DOMAINE
-      - VALIDATION=http
-    volumes:
-      - ${PWD}/swag/homeassistant.subdomain.conf:/config/nginx/proxy-confs/homeassistant.subdomain.conf
-    ports:
-      - 443:443
-      - 80:80
-    restart: unless-stopped
+  # swag:
+  #   image: linuxserver/swag
+  #   container_name: swag
+  #   cap_add:
+  #     - NET_ADMIN
+  #   environment:
+  #     - PUID=1000
+  #     - PGID=1000
+  #     - TZ=Etc/UTC
+  #     - URL=MON-NOM-DE-DOMAINE
+  #     - VALIDATION=http
+  #   volumes:
+  #     - ${PWD}/swag/homeassistant.subdomain.conf:/config/nginx/proxy-confs/homeassistant.subdomain.conf
+  #   ports:
+  #     - 443:443
+  #     - 80:80
+  #   restart: unless-stopped
   
   homeassistant:
     container_name: homeassistant
-    image: homeassistant/raspberrypi3-homeassistant:latest
+    image: "ghcr.io/home-assistant/home-assistant:stable"
     volumes:
-      - ./homeassistant:/config
+      - ./homeassistant/configuratio:/config
       - /etc/localtime:/etc/localtime:ro
-      - /dev/serial/by-id/usb-1a86_USB2.0-Serial-if00-port0:/dev/serial/by-id/usb-1a86_USB2.0-Serial-if00-port0:ro
+      - /run/dbus:/run/dbus:ro
     restart: unless-stopped
     privileged: true
     network_mode: host
-    devices:
-      - /dev/ttyUSB0:/dev/ttyUSB0
-      - /dev/ttyACM0:/dev/ttyACM0
+    environment:
+      TZ: Europe/Paris
 
   mqtt:
-    image: eclipse-mosquitto:2.0
+    image: eclipse-mosquitto:2.1-alpine
     container_name: mosquitto
     restart: unless-stopped
     volumes:
-      - ./zigbee2mqtt/mosquitto-data:/mosquitto
+      - ./zigbee2mqtt/mosquitto-config:/mosquitto/config
     ports:
-      - 1883:1883
-      - 9001:9001
-    command: mosquitto -c /mosquitto-no-auth.conf
-  
+      - "1883:1883"
+
   zigbee2mqtt:
     container_name: zigbee2mqtt
+    image: ghcr.io/koenkk/zigbee2mqtt
     restart: unless-stopped
-    image: koenkk/zigbee2mqtt
     volumes:
       - ./zigbee2mqtt/zigbee2mqtt-data:/app/data
       - /run/udev:/run/udev:ro
     ports:
-      - 8080:8080
+      - "8080:8080"
     environment:
-      - TZ=Europe/Berlin
+      - TZ=Europe/Paris
     devices:
-      - /dev/ttyUSB0:/dev/ttyUSB0
-      - /dev/ttyACM0:/dev/ttyACM0
-
-  rpi-monitor:
-    image: michaelmiklis/rpi-monitor:latest
-    container_name: rpi-monitor
-    volumes:
-      - /opt/vc:/opt/vc
-      - /boot:/boot
-      - /sys:/dockerhost/sys:ro
-      - /etc:/dockerhost/etc:ro
-      - /proc:/dockerhost/proc:ro
-      - /usr/lib:/dockerhost/usr/lib:ro
-    devices:
-      - "/dev/vchiq:/dev/vchiq"
-    restart: unless-stopped
-    ports:
-      - 8888:8888
-
-  motioneye:
-    image: daku/motioneye:latest
-    ports:
-      - "8081:8081"
-      - "8765:8765"
-    volumes:
-      - etc_motioneye:/etc/motioneye
-      - var_lib_motioneye:/var/lib/motioneye
-
-volumes:
-  etc_motioneye:
-  var_lib_motioneye:
+      # Make sure this matched your adapter location
+      - /dev/serial/by-id/your-adapter-id:/dev/ttyACM0

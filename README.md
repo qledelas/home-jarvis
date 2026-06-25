@@ -105,8 +105,15 @@ sudo ./scripts/install-docker-debian.sh
 
 Le script installe Docker Engine, Docker Compose (plugin), active le service et ajoute l’utilisateur courant au groupe docker.
 
+Récupérer l'id de votre dongle zigbee pour modifier le fichier docker-compose.yml avec la bonne valeur. 
+```bash
+ls /dev/serial/by-id/
+```
+
 Ensuite démarré la stack :
 
 ```bash
 docker compose up -d
 ```
+
+Accéder à <http://localhost:8123/> 
