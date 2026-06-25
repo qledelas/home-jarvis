@@ -117,3 +117,16 @@ docker compose up -d
 ```
 
 Accéder à <http://localhost:8123/> 
+
+# Next step 
+
+Domotique :
+- Reprendre la configuration swag pour un accès externe
+- Reprendre la configuration googleHome
+- importer ma config zigbee existante
+NAS :
+- ajouter nextcloud dans docker compose
+- relire le script de réplication pour comprendre quel dossier est répliqué
+- ajouter jellyfish dans docker compose
+- regarder s'il existe mieux que transmission/radaar
+- ajouter transmission dans docker compose
