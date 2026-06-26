@@ -38,7 +38,6 @@ echo "[5/5] Activation et démarrage du service Docker..."
 systemctl enable docker
 systemctl start docker
 
-groupadd docker
 usermod -aG docker "lecube"
 
 echo ""

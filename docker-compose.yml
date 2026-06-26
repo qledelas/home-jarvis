@@ -1,4 +1,6 @@
 services:
+
+# --------- Domotique ---------
   # swag:
   #   image: linuxserver/swag
   #   container_name: swag
@@ -18,10 +20,12 @@ services:
   #   restart: unless-stopped
   
   homeassistant:
+    profiles:
+      - domotique
     container_name: homeassistant
     image: "ghcr.io/home-assistant/home-assistant:stable"
     volumes:
-      - ./homeassistant/configuratio:/config
+      - ./homeassistant:/config
       - /etc/localtime:/etc/localtime:ro
       - /run/dbus:/run/dbus:ro
     restart: unless-stopped
@@ -31,6 +35,8 @@ services:
       TZ: Europe/Paris
 
   mqtt:
+    profiles:
+      - domotique
     image: eclipse-mosquitto:2.1-alpine
     container_name: mosquitto
     restart: unless-stopped
@@ -40,6 +46,8 @@ services:
       - "1883:1883"
 
   zigbee2mqtt:
+    profiles:
+      - wip
     container_name: zigbee2mqtt
     image: ghcr.io/koenkk/zigbee2mqtt
     restart: unless-stopped
@@ -53,3 +61,45 @@ services:
     devices:
       # Make sure this matched your adapter location
       - /dev/serial/by-id/your-adapter-id:/dev/ttyACM0
+
+# --------- Media ---------
+  transmission:
+    profiles:
+      - media
+    image: lscr.io/linuxserver/transmission:latest
+    container_name: transmission
+    env_file:
+      - .env
+    environment:
+      - USER=transmission
+      - PASS=${TRANSMISSION_PASS}
+      - PUID=${ID}
+      - PGID=${GID}
+      - TZ=Europe/Paris
+    volumes:
+      - ./transmission/data:/config
+      - $HOME/downloads:/downloads
+    ports:
+      - 9091:9091
+      - 51413:51413
+      - 51413:51413/udp
+    restart: unless-stopped
+  
+  jellyfin:
+    profiles:
+      - media
+    image: jellyfin/jellyfin
+    container_name: jellyfin
+    user: ${ID}:${GID}
+    ports:
+      - 8096:8096/tcp
+      - 7359:7359/udp
+    volumes:
+      - ./jellyfin/config:/config
+      - ./jellyfin/cache:/cache
+      - type: bind
+        source: $HOME/downloads
+        target: /media
+    restart: 'unless-stopped'
+
+# --------- NAS ---------

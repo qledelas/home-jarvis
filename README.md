@@ -117,13 +117,22 @@ Récupérer l'id de votre dongle zigbee pour modifier le fichier docker-compose.
 ls /dev/serial/by-id/
 ```
 
+Dupliquer le fichier .env.example et remplire les valeurs
+```bash
+cp .env.example .env
+```
+
 Ensuite démarré la stack :
 
 ```bash
 docker compose up -d
 ```
 
-Accéder à <http://localhost:8123/> 
+Liste des urls accessible : 
+   - homeassistant : <tonip:8123>
+   - zigbeetomqtt : <tonip:8123>
+   - transmission : <tonip:9091>
+   - jellyfin : <tonip:8096>
 
 # Next step 
 
@@ -133,7 +142,3 @@ Domotique :
 - importer ma config zigbee existante
 NAS :
 - ajouter nextcloud dans docker compose
-- relire le script de réplication pour comprendre quel dossier est répliqué
-- ajouter jellyfish dans docker compose
-- regarder s'il existe mieux que transmission/radaar
-- ajouter transmission dans docker compose
