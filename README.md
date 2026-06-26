@@ -43,24 +43,36 @@ flowchart TD
 
 ## Installation de l'OS
 
-1. Télécharger l'image ISO de Debian stable depuis https://www.debian.org/distrib/
-2. Créer une clé USB bootable avec l'ISO :
-   - Sur Linux : `sudo dd if=debian-XX.X.X-amd64-netinst.iso of=/dev/sdX bs=4M status=progress && sync`
-   - Sur Windows : utiliser Rufus et sélectionner l'ISO Debian
+1. Télécharger l'image ISO de Debian stable depuis <https://debian.obspm.fr/debian-cd/13.5.0/amd64/iso-cd/>
+2. Créer une clé USB bootable avec l'ISO en utilisant le logiciel de votre choix
 3. Brancher la clé USB au mini-PC et démarrer dessus.
-4. Dans le menu d'installation, choisir "Install" ou "Graphical Install" si l'option est proposée, puis sélectionner "Français".
-5. Configurer le clavier, le réseau et le nom de la machine.
-6. Lors de la configuration du réseau :
-   - choisir une adresse IPv4 statique ou DHCP selon les besoins
-   - activer l'interface réseau
-7. Installer le système minimal sans environnement graphique :
-   - sélectionner "Install" ou "Expert install"
-   - dans les tâches d'installation, décocher les environnements de bureau
-   - cocher uniquement "SSH server" pour activer SSH
-8. Terminer l'installation, retirer la clé USB puis redémarrer.
-9. Se connecter en SSH depuis un autre poste : `ssh utilisateur@adresse_ip`
+4. Dans le menu d'installation,"Graphical Install", puis suivre les étapes d'installation
 
-> Note : si l'option "SSH server" n'apparaît pas, installer openssh-server après le premier démarrage avec la commande : `sudo apt update && sudo apt install openssh-server`.
+> Note : Attention à installer le système minimal sans environnement graphique, dans les tâches d'installation : décocher les environnements de bureau, cocher "SSH server"
+
+### Cloner le projet
+
+Afin de récupérer les scripts d'installation il faut cloner le projet.
+Pour commencer créer une clé ssh et l'importer dans github. 
+Commande pour créer une clé ssh : 
+
+```shell
+# Ajouter la commande sudo
+su root
+apt install sudo
+/usr/sbin/usermod -aG sudo lecube
+exit
+
+# Installer git
+sudo apt install git
+
+# Génerer la clé ssh
+ssh-keygen -t ed25519 -C "lecube"
+cat ~/.ssh/id_ed25519.pub
+
+# Cloner le projet
+git clone git@github.com:qledelas/home-jarvis.git
+```
 
 ## Réplication des disques
 
@@ -83,11 +95,6 @@ flowchart TD
    - formatage en `ext4`
    - montage sur `/mnt/raid1`
    - ajout de la configuration au démarrage dans `/etc/fstab`
-5. Vérifier l’état du RAID :
-   ```bash
-   cat /proc/mdstat
-   sudo mdadm --detail /dev/md0
-   ```
 
 Pour vérifier que le RAID fonctionne correctement, on peut utiliser :
 ```bash

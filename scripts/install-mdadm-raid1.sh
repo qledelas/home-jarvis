@@ -48,8 +48,8 @@ case "$response" in
 esac
 
 echo "[1/6] Installation de mdadm et parted..."
-apt-get update
-apt-get install -y mdadm parted
+apt update
+apt install -y mdadm parted
 
 echo "[2/6] Effacement des signatures existantes..."
 wipefs -a "$disk1" "$disk2"

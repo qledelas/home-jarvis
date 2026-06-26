@@ -11,29 +11,35 @@ if [[ $(id -u) -ne 0 ]]; then
 fi
 
 echo "[1/5] Mise à jour des paquets..."
-apt-get update
-apt-get install -y ca-certificates curl gnupg lsb-release
+apt update
+apt install -y ca-certificates curl
 
 echo "[2/5] Ajout de la clé GPG Docker..."
 install -m 0755 -d /etc/apt/keyrings
-curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-chmod a+r /etc/apt/keyrings/docker.gpg
+curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+chmod a+r /etc/apt/keyrings/docker.asc
 
 echo "[3/5] Ajout du dépôt Docker..."
-cat > /etc/apt/sources.list.d/docker.list <<'EOF'
-deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable
+tee /etc/apt/sources.list.d/docker.sources <<EOF
+Types: deb
+URIs: https://download.docker.com/linux/debian
+Suites: $(. /etc/os-release && echo "$VERSION_CODENAME")
+Components: stable
+Architectures: $(dpkg --print-architecture)
+Signed-By: /etc/apt/keyrings/docker.asc
 EOF
 
-apt-get update
+apt update
 
 echo "[4/5] Installation de Docker Engine et Docker Compose..."
-apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 echo "[5/5] Activation et démarrage du service Docker..."
 systemctl enable docker
 systemctl start docker
 
-usermod -aG docker "$SUDO_USER"
+groupadd docker
+usermod -aG docker "lecube"
 
 echo ""
 echo "Installation terminée."
