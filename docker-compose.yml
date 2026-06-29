@@ -37,18 +37,21 @@ services:
   mqtt:
     profiles:
       - domotique
-    image: eclipse-mosquitto:2.1-alpine
+    image: eclipse-mosquitto
     container_name: mosquitto
     restart: unless-stopped
     volumes:
-      - ./zigbee2mqtt/mosquitto-config:/mosquitto/config
+      - ./zigbee2mqtt/mosquitto-data:/mosquitto
+    command: mosquitto -c /mosquitto-no-auth.conf
     ports:
-      - "1883:1883"
+      - 1883:1883
 
   zigbee2mqtt:
     profiles:
-      - wip
+      - domotique
     container_name: zigbee2mqtt
+    depends_on:
+      - mqtt
     image: ghcr.io/koenkk/zigbee2mqtt
     restart: unless-stopped
     volumes:
