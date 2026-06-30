@@ -10,15 +10,16 @@ automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 
-# homeassistant:
-#   external_url: https://MON-NOM-DE-DOMAINE
-# #  internal_url: "http://MON-NOM-DE-DOMAINE:8123"
+homeassistant:
+  external_url: https://homeassistant.example.com
+  internal_url: http://127.0.0.1:8123
 
-# http:
-#   use_x_forwarded_for: true
-#   trusted_proxies:
-#     - 192.168.0.0/24
-#     - 172.18.0.0/24
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 127.0.0.1
+    - 172.16.0.0/12
+    - 192.168.0.0/16
 
 # google_assistant:
 #   project_id: maison-10611

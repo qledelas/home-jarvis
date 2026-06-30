@@ -1,24 +1,20 @@
 services:
 
 # --------- Domotique ---------
-  # swag:
-  #   image: linuxserver/swag
-  #   container_name: swag
-  #   cap_add:
-  #     - NET_ADMIN
-  #   environment:
-  #     - PUID=1000
-  #     - PGID=1000
-  #     - TZ=Etc/UTC
-  #     - URL=MON-NOM-DE-DOMAINE
-  #     - VALIDATION=http
-  #   volumes:
-  #     - ${PWD}/swag/homeassistant.subdomain.conf:/config/nginx/proxy-confs/homeassistant.subdomain.conf
-  #   ports:
-  #     - 443:443
-  #     - 80:80
-  #   restart: unless-stopped
-  
+  caddy:
+    profiles:
+      - public
+    image: caddy
+    container_name: caddy
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./caddy/data:/data
+      - ./caddy/config:/config
+    environment:
+      TZ: Europe/Paris
+
   homeassistant:
     profiles:
       - domotique

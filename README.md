@@ -112,10 +112,9 @@ sudo ./scripts/install-docker-debian.sh
 
 Le script installe Docker Engine, Docker Compose (plugin), active le service et ajoute l’utilisateur courant au groupe docker.
 
-Récupérer l'id de votre dongle zigbee pour modifier le fichier docker-compose.yml avec la bonne valeur. 
-```bash
-ls /dev/serial/by-id/
-```
+### Media
+
+Cette section permet de démarrer les outils nécessaire pour télécharger des médias et les lires grâce à transmission et jellyfin.
 
 Dupliquer le fichier .env.example et remplire les valeurs
 ```bash
@@ -125,20 +124,58 @@ cp .env.example .env
 Ensuite démarré la stack :
 
 ```bash
-docker compose up -d
+docker compose up --profile media -d
 ```
 
 Liste des urls accessible : 
    - homeassistant : <tonip:8123>
-   - zigbeetomqtt : <tonip:8123>
+   - zigbeetomqtt : <tonip:8080>
    - transmission : <tonip:9091>
    - jellyfin : <tonip:8096>
+
+
+### Domotique
+
+Cette section permet de démarrer les outils nécessaire gérer votre domotique avec Homeassistant des appareils zigbee
+
+Récupérer l'id de votre dongle zigbee pour modifier le fichier docker-compose.yml avec la bonne valeur. 
+```bash
+ls /dev/serial/by-id/
+```
+
+Ensuite démarré la stack :
+
+```bash
+docker compose up --profile domotique -d
+```
+
+Liste des urls accessible : 
+   - homeassistant : <tonip:8123>
+   - zigbeetomqtt : <tonip:8080>
+
+Il suffit de se rendre dans l'interface de zigbeetomqtt pour cliquer sur "Autoriser l'appairage" afin d'ajouter de nouveaux apparails.
+
+### Public
+
+Afin de pouvoir utiliser google assistant, il faut que votre homeassistant soit disponible en https. 
+Pour faire cela nous allons utiliser le reverse proxy caddy. 
+
+Modifier dans Caddifile et dans configuration.yml de HA l'url par votre nom de domaine.
+
+Ensuite démarré la stack :
+
+```bash
+docker compose up --profile public -d
+```
+
+Liste des urls accessible : 
+   - homeassistant : <https://homeassistant.example.com>
+
 
 # Next step 
 
 Domotique :
 - Reprendre la configuration swag pour un accès externe
 - Reprendre la configuration googleHome
-- importer ma config zigbee existante
 NAS :
 - ajouter nextcloud dans docker compose
