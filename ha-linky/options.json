@@ -15,5 +15,7 @@
       "production": true
     }
   ],
-  "costs": []
+  "costs": {
+    "price": 0.23
+  }
 }

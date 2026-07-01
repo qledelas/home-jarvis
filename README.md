@@ -176,7 +176,8 @@ Liste des urls accessible :
 Pour récupérer ma consommation dans homeassistant j'utilise <https://github.com/bokub/ha-linky>
 
 Il faut dans HA aller dans /profile/security et créer un jeton d'accès à stoker dans le fichier .env pour la clé SUPERVISOR_TOKEN.
-Il faut également completer le fichier ha-linky/options.json avec le prm et le token récupérable à l'adresse suivante : <https://conso.boris.sh>
+Il faut également completer le fichier ha-linky/options.json avec le `prm` et le `token` récupérable à l'adresse suivante : <https://conso.boris.sh>
+Il faut également renseigner votre prix au Kwh. 
 
 Commande à lancer
 ```shell
