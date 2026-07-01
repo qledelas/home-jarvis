@@ -1,0 +1,11 @@
+{
+  "settings": [
+    {
+      "provider": "myaddr",
+      "domain": "myaddr.tools",
+      "host": "example",
+      "key": "yourkey",
+      "ip_version": "ipv4"
+    }
+  ]
+}

@@ -1,6 +1,20 @@
 services:
 
 # --------- Domotique ---------
+  ddns-updater:
+    profiles:
+      - public
+      - all
+    image: qmcgaw/ddns-updater
+    container_name: ddns-updater
+    network_mode: host
+    volumes:
+      - ./caddy/ddns-updater:/updater/data
+    environment:
+      - TZ=Europe/Paris
+      - PERIOD=1h
+    restart: unless-stopped
+
   caddy:
     profiles:
       - public

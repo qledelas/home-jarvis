@@ -157,8 +157,18 @@ Il suffit de se rendre dans l'interface de zigbeetomqtt pour cliquer sur "Autori
 
 ### Public
 
-Afin de pouvoir utiliser google assistant, il faut que votre homeassistant soit disponible en https. 
-Pour faire cela nous allons utiliser le reverse proxy caddy. 
+Afin de pouvoir utiliser google assistant, il faut que votre homeassistant soit disponible en https.
+
+La premiere étape est de créer un nom de domaie gratuit qui renvoie vers l'IP de votre box.
+Pour cela je recommande https://myaddr.tools/ pour créer votre nom de domaine example.myaddr.io.
+Renseigner ensuite votre domaine et la clé dans caddy/ddns-updater/config.json
+
+Un container ddns va s'occuper pour vous de récupérer votre ip public et faire l'enregistrement DNS.
+Le refresh est fais toute les heures. 
+
+Il vous faudra configurer votre box pour définir une IP fix à votre miniPC ( section DHCP) et rediriger certain port vers votre miniPC ( section NAT )
+
+Ensuite nous utilisons le reverse proxy caddy pour rediriger vers le bon service en fonction du sous nom de domaine.
 
 Modifier dans Caddifile et dans configuration.yml de HA l'url par votre nom de domaine.
 
@@ -169,7 +179,7 @@ docker compose up --profile public -d
 ```
 
 Liste des urls accessible : 
-   - homeassistant : <https://homeassistant.example.com>
+   - homeassistant : <https://home.example..myaddr.io>
 
 ### Consommation électrique
 
@@ -195,9 +205,6 @@ Renseigner le nom de domaine dans le fichier caddy.
 
 Domotique :
 - Reprendre la configuration googleHome
-- utiliser https://myaddr.tools/ pour le DSN (avec update auto de l'IP) ou DuckDNS
 Media: 
 - tester l'application Jellifyn sur télé et en remote
 - tester radaar, polaar, et tous ça
-NAS :
-- ajouter nextcloud dans docker compose
