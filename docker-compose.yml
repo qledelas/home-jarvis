@@ -4,6 +4,7 @@ services:
   caddy:
     profiles:
       - public
+      - all
     image: caddy
     container_name: caddy
     restart: unless-stopped
@@ -18,6 +19,8 @@ services:
   homeassistant:
     profiles:
       - domotique
+      - public
+      - all
     container_name: homeassistant
     image: "ghcr.io/home-assistant/home-assistant:stable"
     volumes:
@@ -33,6 +36,7 @@ services:
   mqtt:
     profiles:
       - domotique
+      - all
     image: eclipse-mosquitto
     container_name: mosquitto
     restart: unless-stopped
@@ -45,6 +49,7 @@ services:
   zigbee2mqtt:
     profiles:
       - domotique
+      - all
     container_name: zigbee2mqtt
     depends_on:
       - mqtt
@@ -64,6 +69,9 @@ services:
   ha-linky:
     profiles:
       - linky
+      - all
+    container_name: ha-linky
+    restart: unless-stopped  
     image: ha-linky
     network_mode: host
     environment:
@@ -77,6 +85,7 @@ services:
   transmission:
     profiles:
       - media
+      - all
     image: lscr.io/linuxserver/transmission:latest
     container_name: transmission
     env_file:
@@ -99,6 +108,8 @@ services:
   jellyfin:
     profiles:
       - media
+      - public
+      - all
     image: jellyfin/jellyfin
     container_name: jellyfin
     user: ${ID}:${GID}
@@ -114,3 +125,24 @@ services:
     restart: 'unless-stopped'
 
 # --------- NAS ---------
+  nextcloud:
+    profiles:
+      - nas
+      - public
+      - all
+    image: ghcr.io/nextcloud-releases/all-in-one:latest
+    init: true
+    restart: unless-stopped
+    network_mode: bridge
+    container_name: nextcloud-aio-mastercontainer
+    volumes:
+      - nextcloud_aio_mastercontainer:/mnt/docker-aio-config
+      - /var/run/docker.sock:/var/run/docker.sock:ro 
+    environment:
+      - APACHE_PORT=11000
+    ports:
+      - "8081:8080"
+
+volumes:
+  nextcloud_aio_mastercontainer:
+    name: nextcloud_aio_mastercontainer

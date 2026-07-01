@@ -3,5 +3,11 @@
 }
 
 homeassistant.example.com {
-  reverse_proxy 127.0.0.1:8123
+  reverse_proxy localhost:8123
+}
+
+
+cloud.example.com {
+  header Strict-Transport-Security max-age=31536000;
+  reverse_proxy localhost:11000
 }

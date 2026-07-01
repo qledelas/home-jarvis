@@ -185,6 +185,12 @@ docker build https://github.com/bokub/ha-linky.git -f standalone.Dockerfile -t h
 docker compose --profile linky up -d
 ```
 
+### NAS
+
+Afin d'avoir un drive maison j'utilise l'application nextcloud. Elle fournie une image docker tous compris : <https://github.com/nextcloud/all-in-one/blob/main/compose.yaml>
+
+Renseigner le nom de domaine dans le fichier caddy. 
+
 # Next step 
 
 Domotique :
