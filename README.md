@@ -171,11 +171,26 @@ docker compose up --profile public -d
 Liste des urls accessible : 
    - homeassistant : <https://homeassistant.example.com>
 
+### Consommation électrique
+
+Pour récupérer ma consommation dans homeassistant j'utilise <https://github.com/bokub/ha-linky>
+
+Il faut dans HA aller dans /profile/security et créer un jeton d'accès à stoker dans le fichier .env pour la clé SUPERVISOR_TOKEN.
+Il faut également completer le fichier ha-linky/options.json avec le prm et le token récupérable à l'adresse suivante : <https://conso.boris.sh>
+
+Commande à lancer
+```shell
+docker build https://github.com/bokub/ha-linky.git -f standalone.Dockerfile -t ha-linky
+docker compose --profile linky up -d
+```
 
 # Next step 
 
 Domotique :
-- Reprendre la configuration swag pour un accès externe
 - Reprendre la configuration googleHome
+- utiliser https://myaddr.tools/ pour le DSN (avec update auto de l'IP) ou DuckDNS
+Media: 
+- tester l'application Jellifyn sur télé et en remote
+- tester radaar, polaar, et tous ça
 NAS :
 - ajouter nextcloud dans docker compose

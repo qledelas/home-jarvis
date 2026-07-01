@@ -61,6 +61,18 @@ services:
       # Make sure this matched your adapter location
       - /dev/serial/by-id/your-adapter-id:/dev/ttyACM0
 
+  ha-linky:
+    profiles:
+      - linky
+    image: ha-linky
+    network_mode: host
+    environment:
+      - SUPERVISOR_TOKEN=${SUPERVISOR_TOKEN}
+      - WS_URL=ws://127.0.0.1:8123/api/websocket
+      - TZ=Europe/Paris
+    volumes:
+      - ./ha-linky:/data
+
 # --------- Media ---------
   transmission:
     profiles:

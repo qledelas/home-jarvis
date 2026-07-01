@@ -1,0 +1,19 @@
+{
+  "meters": [
+    {
+      "prm": "tonprm",
+      "token": "tontoken",
+      "name": "Linky consumption",
+      "action": "sync",
+      "production": false
+    },
+    {
+      "prm": "",
+      "token": "",
+      "name": "Linky production",
+      "action": "sync",
+      "production": true
+    }
+  ],
+  "costs": []
+}
