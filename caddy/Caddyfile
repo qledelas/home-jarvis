@@ -3,10 +3,27 @@
 }
 
 home.example.myaddr.io {
-  reverse_proxy localhost:8123
+  reverse_proxy 127.0.0.1:8123
 }
 
-cloud.example..myaddr.io {
+cloud.example.myaddr.io {
   header Strict-Transport-Security max-age=31536000;
-  reverse_proxy localhost:11000
+  reverse_proxy 127.0.0.1:11000
+}
+
+initcloud.example.myaddr.io {
+  header Strict-Transport-Security max-age=31536000;
+  reverse_proxy https://127.0.0.1:8080 {
+    transport http {
+      tls_insecure_skip_verify
+    }
+  }
+}
+
+media.example.myaddr.io {
+  reverse_proxy 127.0.0.1:8096
+}
+
+transmission.example.myaddr.io {
+  reverse_proxy 127.0.0.1:9091
 }

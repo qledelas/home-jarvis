@@ -128,8 +128,6 @@ docker compose up --profile media -d
 ```
 
 Liste des urls accessible : 
-   - homeassistant : <tonip:8123>
-   - zigbeetomqtt : <tonip:8080>
    - transmission : <tonip:9091>
    - jellyfin : <tonip:8096>
 
@@ -199,12 +197,19 @@ docker compose --profile linky up -d
 
 Afin d'avoir un drive maison j'utilise l'application nextcloud. Elle fournie une image docker tous compris : <https://github.com/nextcloud/all-in-one/blob/main/compose.yaml>
 
-Renseigner le nom de domaine dans le fichier caddy. 
+Renseigner le nom de domaine dans le fichier caddy.
 
-# Next step 
+Lancer le container :
+```shell
+docker compose up -d nextcloud
+```
 
-Domotique :
-- Reprendre la configuration googleHome
-Media: 
-- tester l'application Jellifyn sur télé et en remote
+Il faut ensuite lancer la configuration en accédant au domaine temporaire initcloud.example.myaddr.io
+Une fois la configuration terminé vous pourrez accéder via cloud.example.myaddr.io
+
+# Next step
+
+NAS: 
+- installer nextcloud avec le bon dossier répliqué
+Media:
 - tester radaar, polaar, et tous ça
