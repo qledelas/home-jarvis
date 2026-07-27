@@ -114,23 +114,60 @@ Le script installe Docker Engine, Docker Compose (plugin), active le service et 
 
 ### Media
 
-Cette section permet de démarrer les outils nécessaire pour télécharger des médias et les lires grâce à transmission et jellyfin.
+Cette section permet de démarrer l’infrastructure de téléchargement et de lecture de médias. Elle repose sur plusieurs services complémentaires : Transmission pour les torrents, Sonarr pour les séries, Radarr pour les films, Prowlarr pour les indexeurs (sites de torrents) et Seerr pour la demande de contenus. Jellyfin sert ensuite de lecteur multimédia pour lire ce qui a été récupéré.
 
-Dupliquer le fichier .env.example et remplire les valeurs
+#### Comment ça fonctionne
+
+Le fonctionnement est le suivant :
+
+1. Seerr permet de demander un film ou une série depuis une interface web simple.
+2. Les demandes sont envoyées vers Sonarr ou Radarr selon le type de média.
+3. Sonarr et Radarr utilisent Prowlarr pour trouver des indexeurs et des sources de recherche fiables.
+4. Les fichiers sont téléchargés par Transmission.
+5. Une fois le téléchargement terminé, Sonarr ou Radarr importent les fichiers dans le dossier de médiathèque.
+6. Jellyfin scanne automatiquement cette médiathèque et permet de lire les contenus depuis un navigateur ou une application compatible.
+
+En pratique, cela forme un pipeline complet : demande -> recherche -> téléchargement -> import -> lecture.
+
+#### URLs et ports par défaut
+
+Comme les containers utilisent le mode réseau host, les services sont accessibles directement sur l’IP du serveur avec les ports suivants :
+
+- Transmission : http://<ton-ip>:9091 ou <https://transmission.example.myaddr.io>
+- Jellyfin : http://<ton-ip>:8096 ou <https://media.example.myaddr.io>
+- Sonarr : http://<ton-ip>:8989
+- Radarr : http://<ton-ip>:7878
+- Prowlarr : http://<ton-ip>:9696
+- Seerr : http://<ton-ip>:5055 ou <https://seer.example.myaddr.io>
+
+#### Configuration minimale à faire lors de la première installation
+
+1. Dupliquer le fichier d’environnement et renseigner les valeurs nécessaires :
+
 ```bash
 cp .env.example .env
 ```
 
-Ensuite démarré la stack :
+2. Vérifier que les variables importantes sont bien définies dans le fichier .env, notamment :
+   - `TRANSMISSION_PASS`
+   - `ID`
+   - `GID`
+
+3. Démarrer la stack media :
 
 ```bash
 docker compose up --profile media -d
 ```
 
-Liste des urls accessible : 
-   - transmission : <tonip:9091>
-   - jellyfin : <tonip:8096>
+4. Configurations recommandées au premier lancement :
+   - Transmission : connecter l’interface avec l’utilisateur `transmission` et le mot de passe défini dans `.env`.
+   - Sonarr : configuer le dossier /data/media/tv en root folder, configurer Transmission comme client de téléchargement, puis connecter Sonarr à Prowlarr.
+   - Radarr : configuer le dossier /data/media/movie en root folder dans media management, configurer Transmission comme client de téléchargement, puis connecter Radarr à Prowlarr.
+   - Prowlarr : ajouter au moins un indexeur et lier Sonarr et Radarr à cet outil. 
+   - Seerr : créer le premier compte administrateur, puis configurer les connexions vers Sonarr et Radarr avec leurs clés API.
+   - Jellyfin : créer le compte administrateur initial, puis ajouter une bibliothèque film vers /media/movie et une bibliothèque serie vers /media/tv.
 
+Une fois ces étapes réalisées, le système est prêt à télécharger, trier et lire vos films et séries automatiquement.
 
 ### Domotique
 
@@ -211,5 +248,4 @@ Une fois la configuration terminé vous pourrez accéder via cloud.example.myadd
 
 NAS: 
 - installer nextcloud avec le bon dossier répliqué
-Media:
-- tester radaar, polaar, et tous ça
+- Faire le readme pour la connection à google home

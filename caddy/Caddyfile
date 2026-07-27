@@ -27,3 +27,7 @@ media.example.myaddr.io {
 transmission.example.myaddr.io {
   reverse_proxy 127.0.0.1:9091
 }
+
+seerr.example.myaddr.io {
+  reverse_proxy 127.0.0.1:5055
+}

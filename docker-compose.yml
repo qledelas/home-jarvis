@@ -115,7 +115,7 @@ services:
       - TZ=Europe/Paris
     volumes:
       - ./transmission/data:/config
-      - $HOME/downloads:/downloads
+      - $HOME/media:/data
     network_mode: host
     restart: unless-stopped
   
@@ -131,10 +131,70 @@ services:
     volumes:
       - ./jellyfin/config:/config
       - ./jellyfin/cache:/cache
-      - type: bind
-        source: $HOME/downloads
-        target: /media
+      - $HOME/media/media:/media
     restart: 'unless-stopped'
+
+  radarr:
+    profiles:
+      - media
+      - all
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=${ID}
+      - PGID=${GID}
+      - TZ=Europe/Paris
+    volumes:
+      - ./radarr/data:/config
+      - $HOME/media:/data
+    network_mode: host
+    restart: unless-stopped
+
+  sonarr:
+    profiles:
+      - media
+      - all
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=${ID}
+      - PGID=${GID}
+      - TZ=Europe/Paris
+    volumes:
+      - ./sonarr/data:/config
+      - $HOME/media:/data
+    network_mode: host
+    restart: unless-stopped
+  
+  prowlarr:
+    profiles:
+      - media
+      - all
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=${ID}
+      - PGID=${GID}
+      - TZ=Europe/Paris
+    volumes:
+      - ./prowlarr/data:/config
+    network_mode: host
+    restart: unless-stopped
+
+  seerr:
+    profiles:
+      - public
+      - media
+      - all
+    image: ghcr.io/seerr-team/seerr:latest
+    init: true
+    container_name: seerr
+    environment:
+      - TZ=Europe/Paris
+    network_mode: host
+    volumes:
+      - ./seerr/config:/app/config
+    restart: unless-stopped
 
 # --------- NAS ---------
   nextcloud:
