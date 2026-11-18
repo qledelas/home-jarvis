@@ -31,3 +31,7 @@ transmission.example.myaddr.io {
 seerr.example.myaddr.io {
   reverse_proxy 127.0.0.1:5055
 }
+
+monitoring.example.myaddr.io {
+  reverse_proxy 127.0.0.1:8090
+}

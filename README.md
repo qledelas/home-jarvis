@@ -20,10 +20,10 @@ Voici les choix retenus :
 - Virtualisation des applications : Docker Compose
 - Domotique : Home Assistant
 - Protocole des objets connectés : Zigbee, géré par Zigbee2MQTT
-- Gestion des fichiers : Nextcloud
 - Réplication des données : mdadm en RAID 1
 - Gestion des médias : Jellyfin
 - Téléchargement de torrents : Transmission
+- Monitoring : Beszel
 
 Voici un schéma simple de l'architecture du projet :
 
@@ -32,9 +32,9 @@ flowchart TD
     A[Mini-PC Debian] --> B[Docker Compose]
     B --> C[Home Assistant]
     B --> D[Zigbee2MQTT]
-    B --> E[Nextcloud]
-    B --> F[Jellyfin]
-    B --> G[Transmission]
+    B --> E[Jellyfin]
+    B --> F[Transmission]
+    B --> G[Beszel]
     A --> H[Disques en RAID 1]
     H --> I[Disques 1]
     H --> J[Disques 2]
@@ -214,7 +214,23 @@ docker compose up --profile public -d
 ```
 
 Liste des urls accessible : 
-   - homeassistant : <https://home.example..myaddr.io>
+   - homeassistant : <https://home.example.myaddr.io>
+
+### Monitoring
+
+Beszel surveille le serveur et ses conteneurs Docker avec un hub et son agent. Les deux services utilisent le profil `monitoring`.
+
+Pour démarrer Beszel :
+```bash
+docker compose --profile monitoring up -d
+```
+
+Le tableau de bord est accessible en local sur `http://<ton-ip>:8090`. Pour y accéder via le domaine HTTPS, il faut également que le profil `public` soit démarré (Caddy sert de reverse proxy) :
+```bash
+docker compose --profile monitoring --profile public up -d
+```
+
+L'URL publique configurée est <https://monitoring.lecube.myaddr.io>.
 
 ### Consommation électrique
 
@@ -230,22 +246,10 @@ docker build https://github.com/bokub/ha-linky.git -f standalone.Dockerfile -t h
 docker compose --profile linky up -d
 ```
 
-### NAS
-
-Afin d'avoir un drive maison j'utilise l'application nextcloud. Elle fournie une image docker tous compris : <https://github.com/nextcloud/all-in-one/blob/main/compose.yaml>
-
-Renseigner le nom de domaine dans le fichier caddy.
-
-Lancer le container :
-```shell
-docker compose up -d nextcloud
-```
-
-Il faut ensuite lancer la configuration en accédant au domaine temporaire initcloud.example.myaddr.io
-Une fois la configuration terminé vous pourrez accéder via cloud.example.myaddr.io
 
 # Next step
 
 NAS: 
-- installer nextcloud avec le bon dossier répliqué
+- installer immich
+- installer paperless
 - Faire le readme pour la connection à google home

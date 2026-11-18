@@ -16,6 +16,7 @@
     }
   ],
   "costs": {
-    "price": 0.23
+    "price": 0.225,
+    "currency": "€"
   }
 }

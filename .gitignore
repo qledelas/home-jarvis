@@ -1,1 +1,7 @@
 .env
+beszel_agent_data/fingerprint
+beszel_data/auxiliary.db
+beszel_data/data.db
+beszel_data/data.db-shm
+beszel_data/data.db-wal
+beszel_data/id_ed25519
