@@ -114,7 +114,7 @@ Le script installe Docker Engine, Docker Compose (plugin), active le service et 
 
 ### Media
 
-Cette section permet de démarrer l’infrastructure de téléchargement et de lecture de médias. Elle repose sur plusieurs services complémentaires : Transmission pour les torrents, Sonarr pour les séries, Radarr pour les films, Prowlarr pour les indexeurs (sites de torrents) et Seerr pour la demande de contenus. Jellyfin sert ensuite de lecteur multimédia pour lire ce qui a été récupéré.
+Cette section permet de démarrer l’infrastructure de téléchargement et de lecture de médias. Elle repose sur plusieurs services complémentaires : Transmission pour les torrents, Sonarr pour les séries, Radarr pour les films, Bazarr pour la gestion des sous-titres, Prowlarr pour les indexeurs (sites de torrents) et Seerr pour la demande de contenus. Jellyfin sert ensuite de lecteur multimédia pour lire ce qui a été récupéré.
 
 #### Comment ça fonctionne
 
@@ -137,6 +137,7 @@ Comme les containers utilisent le mode réseau host, les services sont accessibl
 - Jellyfin : http://<ton-ip>:8096 ou <https://media.example.myaddr.io>
 - Sonarr : http://<ton-ip>:8989
 - Radarr : http://<ton-ip>:7878
+- Bazarr : http://<ton-ip>:6767
 - Prowlarr : http://<ton-ip>:9696
 - Seerr : http://<ton-ip>:5055 ou <https://seer.example.myaddr.io>
 
@@ -163,6 +164,7 @@ docker compose up --profile media -d
    - Transmission : connecter l’interface avec l’utilisateur `transmission` et le mot de passe défini dans `.env`.
    - Sonarr : configuer le dossier /data/media/tv en root folder, configurer Transmission comme client de téléchargement, puis connecter Sonarr à Prowlarr.
    - Radarr : configuer le dossier /data/media/movie en root folder dans media management, configurer Transmission comme client de téléchargement, puis connecter Radarr à Prowlarr.
+   - Bazarr : configurer les connexions vers Sonarr et Radarr, puis choisir les langues de sous-titres souhaitées.
    - Prowlarr : ajouter au moins un indexeur et lier Sonarr et Radarr à cet outil. 
    - Seerr : créer le premier compte administrateur, puis configurer les connexions vers Sonarr et Radarr avec leurs clés API.
    - Jellyfin : créer le compte administrateur initial, puis ajouter une bibliothèque film vers /media/movie et une bibliothèque serie vers /media/tv.

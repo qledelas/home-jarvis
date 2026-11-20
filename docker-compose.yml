@@ -166,6 +166,22 @@ services:
     network_mode: host
     restart: unless-stopped
   
+  bazarr:
+    profiles:
+      - media
+      - all
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    environment:
+      - PUID=${ID}
+      - PGID=${GID}
+      - TZ=Europe/Paris
+    volumes:
+      - ./bazarr/data:/config
+      - $HOME/media:/data
+    network_mode: host
+    restart: unless-stopped
+  
   prowlarr:
     profiles:
       - media
